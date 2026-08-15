@@ -5,7 +5,7 @@ import urllib.request
 
 prompt = sys.argv[1]
 
-with open("index.html", "r", encoding="utf-8") as f:
+with open("fbsayt.html", "r", encoding="utf-8") as f:
     current_html = f.read()
 
 instruction = f"""
@@ -51,5 +51,5 @@ for output in result["output"]:
 if not new_html.strip():
     raise RuntimeError("OpenAI не вернул HTML")
 
-with open("index.html", "w", encoding="utf-8") as f:
+with open("fbsayt.html", "w", encoding="utf-8") as f:
     f.write(new_html)
