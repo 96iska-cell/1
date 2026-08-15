@@ -66,8 +66,13 @@ jobs:
           with urllib.request.urlopen(request) as response:
               result = json.loads(response.read().decode())
  
-          new_html = "".join(item["text"] for output in result["output"] if output["type"] == "message" for item in output["content"] if item["type"] == "output_text")
-
+                    new_html = "".join(
+              item["text"]
+              for output in result["output"]
+              if output["type"] == "message"
+              for item in output["content"]
+              if item["type"] == "output_text"
+          )
  
           with open("index.html", "w", encoding="utf-8") as f:
               f.write(new_html)
