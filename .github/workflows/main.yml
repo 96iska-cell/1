@@ -1,0 +1,82 @@
+name: AI Website Agent
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Что нужно изменить на сайте?"
+        required: true
+        type: string
+ 
+permissions:
+  contents: write
+ 
+jobs:
+  ai-agent:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Скачать сайт
+        uses: actions/checkout@v4
+ 
+      - name: AI изменяет сайт
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          USER_PROMPT: ${{ inputs.prompt }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import json
+          import urllib.request
+ 
+          with open("index.html", "r", encoding="utf-8") as f:
+              current_html = f.read()
+ 
+          prompt = os.environ["USER_PROMPT"]
+ 
+          instruction = f"""
+          Ты AI-агент, который редактирует HTML-сайт.
+ 
+          Задача пользователя:
+          {prompt}
+ 
+          Текущий index.html:
+          {current_html}
+ 
+          Верни ПОЛНЫЙ новый index.html.
+          Не используй Markdown и ``` .
+          Не объясняй изменения.
+          Верни только готовый HTML-код.
+          """
+ 
+          data = json.dumps({
+              "model": "gpt-5.6",
+              "input": instruction
+          }).encode()
+ 
+          request = urllib.request.Request(
+              "https://api.openai.com/v1/responses",
+              data=data,
+              headers={
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]
+              }
+          )
+ 
+          with urllib.request.urlopen(request) as response:
+              result = json.loads(response.read().decode())
+ 
+new_html = "".join(item["text"] for output in result["output"] if output["type"] == "message" for item in output["content"] if item["type"] == "output_text")
+
+ 
+          with open("index.html", "w", encoding="utf-8") as f:
+              f.write(new_html)
+          PY
+ 
+      - name: Сохранить изменения
+        run: |
+          git config user.name "AI Website Agent"
+          git config user.email "ai-agent@users.noreply.github.com"
+          git add index.html
+          git commit -m "AI: update website" || echo "Нет изменений"
+          git push
