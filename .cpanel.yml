@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/fabiobor/public_html/
-    - /bin/cp -R ./* $DEPLOYPATH
+    - /bin/cp -f fbsayt.html "${DEPLOYPATH}index.html"
