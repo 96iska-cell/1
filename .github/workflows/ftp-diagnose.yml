@@ -1,0 +1,24 @@
+name: Diagnose FTP root
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/ftp-diagnose.yml
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List FTP directories
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          echo "FTP ROOT"
+          curl --silent --show-error --max-time 30 --user "$FTP_USERNAME:$FTP_PASSWORD" "ftp://$FTP_HOST:$FTP_PORT/" --list-only
+          echo "PUBLIC_HTML"
+          curl --silent --show-error --max-time 30 --user "$FTP_USERNAME:$FTP_PASSWORD" "ftp://$FTP_HOST:$FTP_PORT/public_html/" --list-only
