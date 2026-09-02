@@ -18,6 +18,10 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
         run: |
+          echo "FTP IP"
+          getent ahostsv4 "$FTP_HOST" | head -1 | awk '{print $1}'
+          echo "WEB IP"
+          getent ahostsv4 www.fabioborrelli.com | head -1 | awk '{print $1}'
           echo "FTP ROOT"
           curl --silent --show-error --max-time 30 --user "$FTP_USERNAME:$FTP_PASSWORD" "ftp://$FTP_HOST:$FTP_PORT/" --list-only
           echo "PUBLIC_HTML"
