@@ -4,6 +4,7 @@
   const cartKey = "fb_cart_v1";
 
   const money = value => `${value} ₼`;
+  const productUrl = product => `product-${product.id}.html`;
   const getCart = () => {
     try { return JSON.parse(localStorage.getItem(cartKey)) || []; }
     catch (_) { return []; }
@@ -48,14 +49,14 @@
 
   function productCard(product) {
     return `<article class="product-card" data-category="${product.category}" data-color="${product.color.toLowerCase()}">
-      <a class="product-image" href="product.html?id=${product.id}" aria-label="${product.name}">
+      <a class="product-image" href="${productUrl(product)}" aria-label="${product.name}">
         <img src="${product.image}" alt="${product.name}" loading="lazy">
         <span class="product-type">${product.type}</span>
       </a>
       <div class="product-copy">
-        <div class="product-row"><h3><a href="product.html?id=${product.id}">${product.name}</a></h3><strong>${money(product.price)}</strong></div>
+        <div class="product-row"><h3><a href="${productUrl(product)}">${product.name}</a></h3><strong>${money(product.price)}</strong></div>
         <p>${product.description}</p>
-        <div class="product-actions"><span>${product.color} · 39–45</span><a href="product.html?id=${product.id}">Ətraflı bax →</a></div>
+        <div class="product-actions"><span>${product.color} · 39–45</span><a href="${productUrl(product)}">Ətraflı bax →</a></div>
       </div>
     </article>`;
   }
@@ -80,7 +81,7 @@
   function renderProductPage() {
     const root = document.querySelector("[data-product-page]");
     if (!root) return;
-    const id = new URLSearchParams(location.search).get("id") || products[0]?.id;
+    const id = root.dataset.productId || new URLSearchParams(location.search).get("id") || products[0]?.id;
     const product = findProduct(id);
     if (!product) {
       root.innerHTML = `<div class="empty-state"><h1>Məhsul tapılmadı</h1><a class="button dark" href="catalog.html">Kataloqa qayıt</a></div>`;
@@ -131,7 +132,7 @@
       if (!product) return "";
       return `<article class="cart-item">
         <img src="${product.image}" alt="${product.name}">
-        <div class="cart-copy"><h3><a href="product.html?id=${product.id}">${product.name}</a></h3><p>${product.type} · ${product.color}</p><span>Ölçü: ${item.size}</span></div>
+        <div class="cart-copy"><h3><a href="${productUrl(product)}">${product.name}</a></h3><p>${product.type} · ${product.color}</p><span>Ölçü: ${item.size}</span></div>
         <div class="qty-control"><button type="button" data-qty="minus" data-index="${index}" aria-label="Azalt">−</button><span>${item.qty}</span><button type="button" data-qty="plus" data-index="${index}" aria-label="Artır">+</button></div>
         <strong>${money(product.price * item.qty)}</strong>
         <button class="remove-item" type="button" data-remove="${index}">Sil</button>
