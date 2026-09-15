@@ -48,6 +48,7 @@
   }
 
   function productCard(product) {
+    const availableSizes = product.sizes || sizes;
     return `<article class="product-card" data-category="${product.category}" data-color="${product.color.toLowerCase()}">
       <a class="product-image" href="${productUrl(product)}" aria-label="${product.name}">
         <img src="${product.image}" alt="${product.name}" loading="lazy">
@@ -56,7 +57,7 @@
       <div class="product-copy">
         <div class="product-row"><h3><a href="${productUrl(product)}">${product.name}</a></h3><strong>${money(product.price)}</strong></div>
         <p>${product.description}</p>
-        <div class="product-actions"><span>${product.color} · 39–45</span><a href="${productUrl(product)}">Ətraflı bax →</a></div>
+        <div class="product-actions"><span>${product.color} · ${availableSizes[0]}–${availableSizes[availableSizes.length - 1]}</span><a href="${productUrl(product)}">Ətraflı bax →</a></div>
       </div>
     </article>`;
   }
@@ -81,6 +82,11 @@
   function renderProductPage() {
     const root = document.querySelector("[data-product-page]");
     if (!root) return;
+    if (!document.querySelector(".site-header")) {
+      document.body.insertAdjacentHTML("afterbegin", `<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Fabio Borrelli"></a><nav class="main-nav"><a href="index.html">Ana səhifə</a><a class="active" href="catalog.html">Kolleksiya</a><a href="about.html">Haqqımızda</a></nav><div class="header-tools"><a class="phone-link" href="tel:+994504890001">+994 50 489 00 01</a><a class="cart-link" href="cart.html">Səbət <span class="cart-count" data-cart-count hidden>0</span></a></div></div></header>`);
+      document.body.insertAdjacentHTML("beforeend", `<footer class="site-footer"><div class="container"><div class="footer-bottom"><span>© 2026 Fabio Borrelli</span><span>Qapıda ödəniş · Ölçü dəyişdirmə mümkündür</span></div></div></footer>`);
+      updateCartBadges();
+    }
     const id = root.dataset.productId || new URLSearchParams(location.search).get("id") || products[0]?.id;
     const product = findProduct(id);
     if (!product) {
@@ -97,7 +103,7 @@
         <div class="detail-price">${money(product.price)}</div>
         <p class="detail-lede">${product.description}</p>
         <dl class="specs"><div><dt>Material</dt><dd>${product.material}</dd></div><div><dt>Detal</dt><dd>${product.accent}</dd></div><div><dt>Çatdırılma</dt><dd>Bakı daxili</dd></div><div><dt>Ödəniş</dt><dd>Qapıda nağd / kart</dd></div></dl>
-        <div class="size-picker"><span>Ölçünü seçin</span><div>${sizes.map(size => `<button type="button" data-size="${size}">${size}</button>`).join("")}</div><small>Ölçü uyğun gəlmədikdə dəyişdirmə mümkündür.</small></div>
+        <div class="size-picker"><span>Ölçünü seçin</span><div>${(product.sizes || sizes).map(size => `<button type="button" data-size="${size}">${size}</button>`).join("")}</div><small>Ölçü uyğun gəlmədikdə dəyişdirmə mümkündür.</small></div>
         <button class="button dark wide" type="button" data-add-product disabled>Səbətə əlavə et</button>
         <a class="text-link" href="tel:+994504890001">Ölçü ilə bağlı məsləhət alın: +994 50 489 00 01</a>
       </div>
