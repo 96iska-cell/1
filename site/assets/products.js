@@ -245,7 +245,7 @@ window.FB_PRODUCTS = [
     "color": "Qəhvəyi",
     "category": "sneaker",
     "type": "Sneaker",
-    "image": "assets/images/nardelli-knit-brown.jpg?v=41e64e9021c9",
+    "image": "assets/images/nardelli-knit-brown.jpg?v=81f387aeb38b",
     "price": 420,
     "sizes": [
       40,
