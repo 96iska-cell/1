@@ -2,4 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/fabiobor/public_html/
+    - python3 scripts/version-assets.py
     - /bin/cp -R site/. "$DEPLOYPATH"

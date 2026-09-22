@@ -83,7 +83,7 @@
     const root = document.querySelector("[data-product-page]");
     if (!root) return;
     if (!document.querySelector(".site-header")) {
-      document.body.insertAdjacentHTML("afterbegin", `<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Fabio Borrelli"></a><nav class="main-nav"><a href="index.html">Ana səhifə</a><a class="active" href="catalog.html">Kolleksiya</a><a href="about.html">Haqqımızda</a></nav><div class="header-tools"><a class="phone-link" href="tel:+994504890001">+994 50 489 00 01</a><a class="cart-link" href="cart.html">Səbət <span class="cart-count" data-cart-count hidden>0</span></a></div></div></header>`);
+      document.body.insertAdjacentHTML("afterbegin", `<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img src="assets/images/logo.png?v=601dc107bcbf" alt="Fabio Borrelli"></a><nav class="main-nav"><a href="index.html">Ana səhifə</a><a class="active" href="catalog.html">Kolleksiya</a><a href="about.html">Haqqımızda</a></nav><div class="header-tools"><a class="phone-link" href="tel:+994504890001">+994 50 489 00 01</a><a class="cart-link" href="cart.html">Səbət <span class="cart-count" data-cart-count hidden>0</span></a></div></div></header>`);
       document.body.insertAdjacentHTML("beforeend", `<footer class="site-footer"><div class="container"><div class="footer-bottom"><span>© 2026 Fabio Borrelli</span><span>Qapıda ödəniş · Ölçü dəyişdirmə mümkündür</span></div></div></footer>`);
       updateCartBadges();
     }
