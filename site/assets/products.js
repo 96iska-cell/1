@@ -1,5 +1,205 @@
 window.FB_PRODUCTS = [
   {
+    "id": "nardelli-strap-loafer-black",
+    "name": "Alberto Nardelli Qara Süet Loafer",
+    "color": "Qara",
+    "category": "loafer",
+    "type": "Loafer",
+    "image": "assets/images/nardelli-strap-loafer-black.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qara süet fakturalı üst, ön qayış və qara taban.",
+    "material": "Süet fakturalı üst",
+    "accent": "Metal detallı ön qayış"
+  },
+  {
+    "id": "fabio-apron-derby-navy",
+    "name": "Fabio Borrelli Lacivərd Derby",
+    "color": "Lacivərd",
+    "category": "classic",
+    "type": "Derby",
+    "image": "assets/images/fabio-apron-derby-navy.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Lacivərd hamar üst, burunda dekorativ tikiş və qara taban.",
+    "material": "Hamar üst",
+    "accent": "Burunda dekorativ tikiş"
+  },
+  {
+    "id": "nardelli-grain-lace-black",
+    "name": "Alberto Nardelli Qara Teksturalı Klassik",
+    "color": "Qara",
+    "category": "classic",
+    "type": "Klassik",
+    "image": "assets/images/nardelli-grain-lace-black.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qara dənəvər fakturalı üst, incə bağcıqlar və qara taban.",
+    "material": "Dənəvər fakturalı üst",
+    "accent": "İncə bağcıqlar"
+  },
+  {
+    "id": "nardelli-grain-lace-navy",
+    "name": "Alberto Nardelli Lacivərd Teksturalı Klassik",
+    "color": "Lacivərd",
+    "category": "classic",
+    "type": "Klassik",
+    "image": "assets/images/nardelli-grain-lace-navy.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Lacivərd dənəvər fakturalı üst, bağcıqlar və qara taban.",
+    "material": "Dənəvər fakturalı üst",
+    "accent": "İncə bağcıqlar"
+  },
+  {
+    "id": "fabio-grain-loafer-black",
+    "name": "Fabio Borrelli Qara Teksturalı Loafer",
+    "color": "Qara",
+    "category": "loafer",
+    "type": "Loafer",
+    "image": "assets/images/fabio-grain-loafer-black.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qara dənəvər faktura, klassik loafer silueti və qara taban.",
+    "material": "Dənəvər fakturalı üst",
+    "accent": "Ön paneldə tikiş"
+  },
+  {
+    "id": "nardelli-elastic-navy",
+    "name": "Alberto Nardelli Lacivərd Elastik Slip-On",
+    "color": "Lacivərd",
+    "category": "loafer",
+    "type": "Slip-On",
+    "image": "assets/images/nardelli-elastic-navy.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Lacivərd teksturalı üst, elastik ön panel və qara taban.",
+    "material": "Teksturalı üst",
+    "accent": "Elastik ön panel"
+  },
+  {
+    "id": "nardelli-suede-derby-brown",
+    "name": "Alberto Nardelli Qəhvəyi Derby",
+    "color": "Qəhvəyi",
+    "category": "classic",
+    "type": "Derby",
+    "image": "assets/images/nardelli-suede-derby-brown.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qəhvəyi süet fakturalı üst, dekorativ ön tikiş və qara taban.",
+    "material": "Süet fakturalı üst",
+    "accent": "Ön paneldə tikiş"
+  },
+  {
+    "id": "nardelli-elastic-brown",
+    "name": "Alberto Nardelli Qəhvəyi Elastik Slip-On",
+    "color": "Qəhvəyi",
+    "category": "loafer",
+    "type": "Slip-On",
+    "image": "assets/images/nardelli-elastic-brown.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Tünd qəhvəyi süet fakturalı üst, elastik panel və qara taban.",
+    "material": "Süet fakturalı üst",
+    "accent": "Elastik ön panel"
+  },
+  {
+    "id": "nardelli-double-monk-black",
+    "name": "Alberto Nardelli Qara Double Monk",
+    "color": "Qara",
+    "category": "classic",
+    "type": "Monk Strap",
+    "image": "assets/images/nardelli-double-monk-black.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qara hamar üst, iki metal toqqa və qara taban.",
+    "material": "Hamar üst",
+    "accent": "İki metal toqqa"
+  },
+  {
+    "id": "nardelli-grain-slipon-black",
+    "name": "Alberto Nardelli Qara Teksturalı Slip-On",
+    "color": "Qara",
+    "category": "loafer",
+    "type": "Slip-On",
+    "image": "assets/images/nardelli-grain-slipon-black.jpg",
+    "price": 420,
+    "sizes": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "description": "Qara dənəvər fakturalı üst, bağcıqsız siluet və qara taban.",
+    "material": "Dənəvər fakturalı üst",
+    "accent": "Bağcıqsız konstruksiya"
+  },
+  {
     "id": "elastic-black",
     "name": "Qara elastik sneaker",
     "color": "Qara",
