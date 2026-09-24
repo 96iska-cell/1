@@ -64,33 +64,28 @@
 
   function renderProductGrid() {
     const grid = document.querySelector("[data-product-grid]");
-    if (!grid) return;
+    if (!grid || !products.length) return;
     const limit = Number(grid.dataset.limit || products.length);
-    const bar = document.querySelector(".filter-bar");
+    const bar = document.querySelector("[data-catalog-filters]");
     if (!bar) {
       grid.innerHTML = products.slice(0, limit).map(productCard).join("");
       return;
     }
 
-    const categories = [["all", "Hamısı"], ["loafer", "Loafer"], ["classic", "Klassik"], ["sneaker", "Sneaker"]];
+    const categories = [["all","Hamısı"],["loafer","Loafer"],["slip-on","Slip-On"],["classic","Klassik"],["monk","Monk Strap"],["sneaker","Sneaker"]];
     const colors = [...new Set(products.map(product => product.color))];
-    const swatches = {"Qara":"#202020","Lacivərd":"#25354b","Qəhvəyi":"#79543b","Bej":"#d9c6a8","Boz":"#969696","Zeytun":"#74754c","Mavi":"#719cb8","Fıstıq yaşılı":"#b1bd8e"};
-    const params = new URLSearchParams(location.search);
-    let category = categories.some(([key]) => key === params.get("category")) ? params.get("category") : "all";
-    let color = colors.includes(params.get("color")) ? params.get("color") : "all";
-    bar.className = "catalog-filters";
-    bar.innerHTML = '<fieldset><legend>Kateqoriya</legend><div class="catalog-filter-options">' +
-      categories.map(([key, label]) => '<button type="button" data-category-filter="' + key + '">' + label + '</button>').join("") +
-      '</div></fieldset><fieldset><legend>Rəng</legend><div class="catalog-filter-options"><button type="button" data-color-filter="all">Bütün rənglər</button>' +
-      colors.map(label => '<button type="button" data-color-filter="' + label + '"><span class="color-swatch" aria-hidden="true" style="background:' + (swatches[label] || "#ccc") + '"></span>' + label + '</button>').join("") +
-      '</div></fieldset><div class="catalog-filter-summary"><span data-filter-count role="status" aria-live="polite"></span><button type="button" data-filter-reset>Filtrləri sıfırla</button></div>';
-    const style = document.createElement("style");
-    style.textContent = '.catalog-filters{margin-bottom:34px}.catalog-filters fieldset{border:0;padding:0;margin:0 0 22px;min-width:0}.catalog-filters legend{font-size:16px;font-weight:600;margin-bottom:10px}.catalog-filter-options{display:flex;flex-wrap:wrap;gap:8px}.catalog-filters button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 16px;font-size:14px;cursor:pointer}.catalog-filters button[aria-pressed="true"]{background:var(--espresso);color:#fff;border-color:var(--espresso)}.catalog-filters button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.color-swatch{width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(128,128,128,.6)}.catalog-filter-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px}.catalog-filters [data-filter-reset]{text-decoration:underline;border:0;padding:8px 0}.catalog-filters [hidden]{display:none}.catalog-empty{grid-column:1/-1;padding:40px 20px;text-align:center;border:1px solid var(--line)}';
-    document.head.appendChild(style);
+    const categoryOf = product => product.type === "Slip-On" || product.id === "milano" ? "slip-on" : product.type === "Monk Strap" ? "monk" : product.category;
+    let category = "all", color = "all";
+    function readFilters() {
+      const params = new URLSearchParams(location.search);
+      category = categories.some(([key]) => key === params.get("category")) ? params.get("category") : "all";
+      color = colors.includes(params.get("color")) ? params.get("color") : "all";
+    }
+    readFilters();
 
     function render(syncUrl) {
       const filtered = products.filter(product =>
-        (category === "all" || product.category === category) &&
+        (category === "all" || categoryOf(product) === category) &&
         (color === "all" || product.color === color));
       grid.innerHTML = filtered.length ? filtered.map(productCard).join("") :
         '<div class="catalog-empty"><p>Bu seçimə uyğun model tapılmadı.</p><button class="button dark" type="button" data-empty-reset>Filtrləri sıfırla</button></div>';
@@ -104,7 +99,7 @@
         else url.searchParams.set("category", category);
         if (color === "all") url.searchParams.delete("color");
         else url.searchParams.set("color", color);
-        history.replaceState(null, "", url);
+        if (url.href !== location.href) history.pushState(null, "", url);
       }
     }
     bar.addEventListener("click", event => {
@@ -122,6 +117,7 @@
         bar.querySelector("[data-category-filter]").focus();
       }
     });
+    window.addEventListener("popstate", () => { readFilters(); render(false); });
     render(false);
   }
 
