@@ -66,17 +66,63 @@
     const grid = document.querySelector("[data-product-grid]");
     if (!grid) return;
     const limit = Number(grid.dataset.limit || products.length);
-    grid.innerHTML = products.slice(0, limit).map(productCard).join("");
+    const bar = document.querySelector(".filter-bar");
+    if (!bar) {
+      grid.innerHTML = products.slice(0, limit).map(productCard).join("");
+      return;
+    }
 
-    const buttons = document.querySelectorAll("[data-filter]");
-    buttons.forEach(button => button.addEventListener("click", () => {
-      buttons.forEach(item => item.classList.remove("active"));
-      button.classList.add("active");
-      const filter = button.dataset.filter;
-      grid.innerHTML = products
-        .filter(product => filter === "all" || product.category === filter || product.color.toLowerCase() === filter)
-        .map(productCard).join("");
-    }));
+    const categories = [["all", "Hamısı"], ["loafer", "Loafer"], ["classic", "Klassik"], ["sneaker", "Sneaker"]];
+    const colors = [...new Set(products.map(product => product.color))];
+    const swatches = {"Qara":"#202020","Lacivərd":"#25354b","Qəhvəyi":"#79543b","Bej":"#d9c6a8","Boz":"#969696","Zeytun":"#74754c","Mavi":"#719cb8","Fıstıq yaşılı":"#b1bd8e"};
+    const params = new URLSearchParams(location.search);
+    let category = categories.some(([key]) => key === params.get("category")) ? params.get("category") : "all";
+    let color = colors.includes(params.get("color")) ? params.get("color") : "all";
+    bar.className = "catalog-filters";
+    bar.innerHTML = '<fieldset><legend>Kateqoriya</legend><div class="catalog-filter-options">' +
+      categories.map(([key, label]) => '<button type="button" data-category-filter="' + key + '">' + label + '</button>').join("") +
+      '</div></fieldset><fieldset><legend>Rəng</legend><div class="catalog-filter-options"><button type="button" data-color-filter="all">Bütün rənglər</button>' +
+      colors.map(label => '<button type="button" data-color-filter="' + label + '"><span class="color-swatch" aria-hidden="true" style="background:' + (swatches[label] || "#ccc") + '"></span>' + label + '</button>').join("") +
+      '</div></fieldset><div class="catalog-filter-summary"><span data-filter-count role="status" aria-live="polite"></span><button type="button" data-filter-reset>Filtrləri sıfırla</button></div>';
+    const style = document.createElement("style");
+    style.textContent = '.catalog-filters{margin-bottom:34px}.catalog-filters fieldset{border:0;padding:0;margin:0 0 22px;min-width:0}.catalog-filters legend{font-size:16px;font-weight:600;margin-bottom:10px}.catalog-filter-options{display:flex;flex-wrap:wrap;gap:8px}.catalog-filters button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 16px;font-size:14px;cursor:pointer}.catalog-filters button[aria-pressed="true"]{background:var(--espresso);color:#fff;border-color:var(--espresso)}.catalog-filters button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.color-swatch{width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(128,128,128,.6)}.catalog-filter-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px}.catalog-filters [data-filter-reset]{text-decoration:underline;border:0;padding:8px 0}.catalog-filters [hidden]{display:none}.catalog-empty{grid-column:1/-1;padding:40px 20px;text-align:center;border:1px solid var(--line)}';
+    document.head.appendChild(style);
+
+    function render(syncUrl) {
+      const filtered = products.filter(product =>
+        (category === "all" || product.category === category) &&
+        (color === "all" || product.color === color));
+      grid.innerHTML = filtered.length ? filtered.map(productCard).join("") :
+        '<div class="catalog-empty"><p>Bu seçimə uyğun model tapılmadı.</p><button class="button dark" type="button" data-empty-reset>Filtrləri sıfırla</button></div>';
+      bar.querySelector("[data-filter-count]").textContent = filtered.length + " model";
+      bar.querySelector("[data-filter-reset]").hidden = category === "all" && color === "all";
+      bar.querySelectorAll("[data-category-filter]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.categoryFilter === category)));
+      bar.querySelectorAll("[data-color-filter]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.colorFilter === color)));
+      if (syncUrl) {
+        const url = new URL(location.href);
+        if (category === "all") url.searchParams.delete("category");
+        else url.searchParams.set("category", category);
+        if (color === "all") url.searchParams.delete("color");
+        else url.searchParams.set("color", color);
+        history.replaceState(null, "", url);
+      }
+    }
+    bar.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button || !bar.contains(button)) return;
+      if (button.hasAttribute("data-category-filter")) category = button.dataset.categoryFilter;
+      else if (button.hasAttribute("data-color-filter")) color = button.dataset.colorFilter;
+      else if (button.hasAttribute("data-filter-reset")) { category = "all"; color = "all"; }
+      else return;
+      render(true);
+    });
+    grid.addEventListener("click", event => {
+      if (event.target.closest("[data-empty-reset]")) {
+        category = "all"; color = "all"; render(true);
+        bar.querySelector("[data-category-filter]").focus();
+      }
+    });
+    render(false);
   }
 
   function renderProductPage() {
